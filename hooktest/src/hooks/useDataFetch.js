@@ -2,12 +2,12 @@ import {useQuery } from "react-query";
 import axios from "axios";
 
 const getData = async () => {
-  const {res} = await axios.get (
+  const {data} = await axios.get (
     "/data"
-  ).then((response) => {console.log(response);
-    return response.data;}
-  )
-  return response.data;
+  ).then((response) => {//console.log(response);
+    return {data:response.data};
+  });
+  return data;
 };
 
 /*
@@ -19,6 +19,9 @@ const getData = async () => {
 */
 
 export const useDataFetch = () =>  {
-  const {data,isLoading} =  useQuery("fetch",getData);
+  const {data,isLoading} =  useQuery("[fetch]",getData,{
+    notifyOnChangeProps:["data","isLoading","error"],
+    refetchInterval: 3000,
+  });
   return {data,isLoading};
 }
